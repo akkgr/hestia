@@ -1,50 +1,76 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { Menu } from 'antd'
 import { AuthUserContext } from '../Session'
-import SignOutButton from '../SignOut'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'recompose'
+import { withFirebase } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
 import * as ROLES from '../../constants/roles'
 
-const Navigation = () => (
+const NavigationBase = ({ firebase, history }) => (
   <AuthUserContext.Consumer>
     {authUser =>
-      authUser ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
+      authUser ? (
+        <NavigationAuth
+          authUser={authUser}
+          firebase={firebase}
+          history={history}
+        />
+      ) : (
+        <NavigationNonAuth history={history} />
+      )
     }
   </AuthUserContext.Consumer>
 )
 
-const NavigationAuth = ({ authUser }) => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
+const NavigationAuth = ({ authUser, firebase, history }) => (
+  <Menu
+    theme="dark"
+    mode="horizontal"
+    selectedKeys={[history.location.pathname]}
+    style={{ lineHeight: '64px' }}
+  >
+    <Menu.Item key={ROUTES.LANDING}>
+      <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
+    </Menu.Item>
+    <Menu.Item key={ROUTES.HOME}>
       <Link to={ROUTES.HOME}>Home</Link>
-    </li>
-    <li>
+    </Menu.Item>
+    <Menu.Item key={ROUTES.ACCOUNT}>
       <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
+    </Menu.Item>
     {authUser.roles.includes(ROLES.ADMIN) && (
-      <li>
+      <Menu.Item key={ROUTES.ADMIN}>
         <Link to={ROUTES.ADMIN}>Admin</Link>
-      </li>
+      </Menu.Item>
     )}
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+    <Menu.Item key={ROUTES.SIGN_OUT} onClick={firebase.doSignOut}>
+      Sign out
+    </Menu.Item>
+  </Menu>
 )
 
-const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
+const NavigationNonAuth = ({ history }) => (
+  <Menu
+    theme="dark"
+    mode="horizontal"
+    selectedKeys={[history.location.pathname]}
+    style={{ lineHeight: '64px' }}
+  >
+    <Menu.Item key={ROUTES.LANDING}>
+      <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
+    </Menu.Item>
+    <Menu.Item key={ROUTES.SIGN_IN}>
       <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
-  </ul>
+    </Menu.Item>
+  </Menu>
 )
 
-export default Navigation
+const Navigation = compose(
+  withRouter,
+  withFirebase
+)(NavigationBase)
+
+export default withFirebase(Navigation)
