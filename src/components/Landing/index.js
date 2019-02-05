@@ -1,9 +1,19 @@
 import React from 'react'
+import { Carousel } from 'antd'
+import './index.css'
 
 const Landing = () => (
-  <div>
-    <h1>Παρακολούθηση Εξόδων - Υπολογισμός Κοινοχρήστων</h1>
-  </div>
+  <Carousel autoplay effect="fade">
+    <div>
+      <h3>Παρακολούθηση Εξόδων</h3>
+    </div>
+    <div>
+      <h3>Υπολογισμός Κοινοχρήστων</h3>
+    </div>
+    <div>
+      <h3>Ημερολόγιο Εργασιών</h3>
+    </div>
+  </Carousel>
 )
 
 export default Landing

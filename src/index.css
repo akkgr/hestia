@@ -14,3 +14,7 @@ code {
 }
 
 @import '~antd/dist/antd.css';
+
+.full-height {
+  height: calc(100vh);
+}

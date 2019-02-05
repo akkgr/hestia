@@ -18,11 +18,11 @@ const { Header, Content, Footer } = Layout
 
 const App = () => (
   <Router>
-    <Layout className="layout">
+    <Layout className="layout full-height">
       <Header>
         <Navigation />
       </Header>
-      <Content style={{ padding: '0 50px' }}>
+      <Content style={{ padding: '10px 50px' }}>
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />

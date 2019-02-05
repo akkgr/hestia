@@ -3,7 +3,7 @@ import { compose } from 'recompose'
 
 import { withAuthorization, withEmailVerification } from '../Session'
 import { withFirebase } from '../Firebase'
-import Messages from '../Messages'
+import Buildings from '../Buildings'
 
 class HomePage extends Component {
   constructor(props) {
@@ -30,14 +30,7 @@ class HomePage extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>Home Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
-
-        <Messages users={this.state.users} />
-      </div>
-    )
+    return <Buildings items={this.state.items} />
   }
 }
 

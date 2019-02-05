@@ -46,7 +46,11 @@ const NavigationAuth = ({ authUser, firebase, history }) => (
         <Link to={ROUTES.ADMIN}>Admin</Link>
       </Menu.Item>
     )}
-    <Menu.Item key={ROUTES.SIGN_OUT} onClick={firebase.doSignOut}>
+    <Menu.Item
+      key={ROUTES.SIGN_OUT}
+      onClick={firebase.doSignOut}
+      style={{ float: 'right' }}
+    >
       Sign out
     </Menu.Item>
   </Menu>
@@ -62,7 +66,7 @@ const NavigationNonAuth = ({ history }) => (
     <Menu.Item key={ROUTES.LANDING}>
       <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
     </Menu.Item>
-    <Menu.Item key={ROUTES.SIGN_IN}>
+    <Menu.Item key={ROUTES.SIGN_IN} style={{ float: 'right' }}>
       <Link to={ROUTES.SIGN_IN}>Sign In</Link>
     </Menu.Item>
   </Menu>
