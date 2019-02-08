@@ -1,43 +1,34 @@
-import React, { Component } from 'react'
-import { compose } from 'recompose'
+import React, { useContext, useState, useEffect } from 'react'
 
 import { withAuthorization, withEmailVerification } from '../Session'
-import { withFirebase } from '../Firebase'
-import Buildings from '../Buildings'
+import { FirebaseContext } from '../Firebase'
+import Messages from '../Messages'
 
-class HomePage extends Component {
-  constructor(props) {
-    super(props)
+const HomePage = ({ authUser }) => {
+  const firebase = useContext(FirebaseContext)
+  const [users, setUsers] = useState(null)
 
-    this.state = {
-      users: null
-    }
-  }
-
-  componentDidMount() {
-    this.unsubscribe = this.props.firebase.users().onSnapshot(snapshot => {
+  useEffect(() => {
+    const unsubscribe = firebase.users().onSnapshot(snapshot => {
       let users = {}
       snapshot.forEach(doc => (users[doc.id] = doc.data()))
-
-      this.setState({
-        users
-      })
+      setUsers(users)
     })
-  }
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <p>The Home Page is accessible by every signed in user.</p>
 
-  render() {
-    return <Buildings items={this.state.items} />
-  }
+      <Messages users={users} authUser={authUser} />
+    </div>
+  )
 }
 
 const condition = authUser => !!authUser
 
-export default compose(
-  withFirebase,
-  withEmailVerification,
-  withAuthorization(condition)
-)(HomePage)
+export default withEmailVerification(withAuthorization(condition)(HomePage))

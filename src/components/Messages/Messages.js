@@ -1,126 +1,98 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
-import { AuthUserContext } from '../Session'
-import { withFirebase } from '../Firebase'
+import { Form, Input, Button } from 'antd'
+import { FirebaseContext } from '../Firebase'
 import MessageList from './MessageList'
 
-class Messages extends Component {
-  constructor(props) {
-    super(props)
+const Messages = ({ users, authUser }) => {
+  const firebase = useContext(FirebaseContext)
+  const [text, setText] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [messages, setMessages] = useState([])
+  const [limit, setLimit] = useState(5)
 
-    this.state = {
-      text: '',
-      loading: false,
-      messages: [],
-      limit: 5
-    }
-  }
+  useEffect(() => {
+    setLoading(true)
 
-  componentDidMount() {
-    this.onListenForMessages()
-  }
-
-  onListenForMessages = () => {
-    this.setState({ loading: true })
-
-    this.unsubscribe = this.props.firebase
+    const unsubscribe = firebase
       .messages()
       .orderBy('createdAt', 'desc')
-      .limit(this.state.limit)
+      .limit(limit)
       .onSnapshot(snapshot => {
         if (snapshot.size) {
           let messages = []
           snapshot.forEach(doc => messages.push({ ...doc.data(), uid: doc.id }))
-
-          this.setState({
-            messages: messages.reverse(),
-            loading: false
-          })
+          setMessages(messages.reverse())
+          setLoading(false)
         } else {
-          this.setState({ messages: null, loading: false })
+          setMessages(null)
+          setLoading(false)
         }
       })
+    return () => {
+      unsubscribe()
+    }
+  }, [limit])
+
+  const onChangeText = event => {
+    setText(event.target.value)
   }
 
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
-  onChangeText = event => {
-    this.setState({ text: event.target.value })
-  }
-
-  onCreateMessage = (event, authUser) => {
-    this.props.firebase.messages().add({
-      text: this.state.text,
+  const onCreateMessage = () => {
+    firebase.messages().add({
+      text: text,
       userId: authUser.uid,
-      createdAt: this.props.firebase.fieldValue.serverTimestamp()
+      createdAt: firebase.fieldValue.serverTimestamp()
     })
 
-    this.setState({ text: '' })
-
-    event.preventDefault()
+    setText('')
   }
 
-  onEditMessage = (message, text) => {
-    this.props.firebase.message(message.uid).update({
+  const onEditMessage = (message, text) => {
+    firebase.message(message.uid).update({
       ...message,
       text,
-      editedAt: this.props.firebase.fieldValue.serverTimestamp()
+      editedAt: firebase.fieldValue.serverTimestamp()
     })
   }
 
-  onRemoveMessage = uid => {
-    this.props.firebase.message(uid).delete()
+  const onRemoveMessage = uid => {
+    firebase.message(uid).delete()
   }
 
-  onNextPage = () => {
-    this.setState(
-      state => ({ limit: state.limit + 5 }),
-      this.onListenForMessages
-    )
+  const onNextPage = () => {
+    setLimit(limit + 5)
   }
 
-  render() {
-    const { users } = this.props
-    const { text, messages, loading } = this.state
+  return (
+    <div>
+      {!loading && messages && <Button onClick={onNextPage}>More</Button>}
 
-    return (
-      <AuthUserContext.Consumer>
-        {authUser => (
-          <div>
-            {!loading && messages && (
-              <button type="button" onClick={this.onNextPage}>
-                More
-              </button>
-            )}
+      {loading && <div>Loading ...</div>}
 
-            {loading && <div>Loading ...</div>}
+      {messages && (
+        <MessageList
+          messages={messages.map(message => ({
+            ...message,
+            user: users ? users[message.userId] : { userId: message.userId }
+          }))}
+          onEditMessage={onEditMessage}
+          onRemoveMessage={onRemoveMessage}
+        />
+      )}
 
-            {messages && (
-              <MessageList
-                messages={messages.map(message => ({
-                  ...message,
-                  user: users
-                    ? users[message.userId]
-                    : { userId: message.userId }
-                }))}
-                onEditMessage={this.onEditMessage}
-                onRemoveMessage={this.onRemoveMessage}
-              />
-            )}
+      {!messages && <div>There are no messages ...</div>}
 
-            {!messages && <div>There are no messages ...</div>}
-
-            <form onSubmit={event => this.onCreateMessage(event, authUser)}>
-              <input type="text" value={text} onChange={this.onChangeText} />
-              <button type="submit">Send</button>
-            </form>
-          </div>
-        )}
-      </AuthUserContext.Consumer>
-    )
-  }
+      <Form layout="inline">
+        <Form.Item label="New message">
+          <Input value={text} onChange={onChangeText} />
+        </Form.Item>
+        <Form.Item>
+          <Button onClick={onCreateMessage}>Send</Button>
+        </Form.Item>
+      </Form>
+    </div>
+  )
 }
 
-export default withFirebase(Messages)
+export default Messages

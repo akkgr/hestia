@@ -9,33 +9,36 @@ import PasswordForgetPage from '../PasswordForget'
 import HomePage from '../Home'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
-
+import { withAuthentication } from '../Session'
 import { Layout } from 'antd'
 import * as ROUTES from '../../constants/routes'
-import { withAuthentication } from '../Session'
+import Buildings from '../Buildings'
 
 const { Header, Content, Footer } = Layout
 
-const App = () => (
-  <Router>
-    <Layout className="layout full-height">
-      <Header>
-        <Navigation />
-      </Header>
-      <Content style={{ padding: '10px 50px' }}>
-        <Route exact path={ROUTES.LANDING} component={LandingPage} />
-        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-        <Route path={ROUTES.HOME} component={HomePage} />
-        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-        <Route path={ROUTES.ADMIN} component={AdminPage} />
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>
-        Cinnamon Design ©2018 Created by Cinnamon Software
-      </Footer>
-    </Layout>
-  </Router>
-)
+const App = () => {
+  return (
+    <Router>
+      <Layout className="layout full-height">
+        <Header>
+          <Navigation />
+        </Header>
+        <Content style={{ padding: '10px 50px' }}>
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+          <Route path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
+          <Route path={ROUTES.BUILDINGS} component={Buildings} />
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          Cinnamon Design ©2018 Created by Cinnamon Software
+        </Footer>
+      </Layout>
+    </Router>
+  )
+}
 
 export default withAuthentication(App)
