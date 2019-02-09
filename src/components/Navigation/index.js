@@ -29,7 +29,7 @@ const NavigationAuth = ({ history, authUser }) => {
       style={{ lineHeight: '64px' }}
     >
       <Menu.Item key={ROUTES.LANDING}>
-        <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
+        <Link to={ROUTES.LANDING}>Estia</Link>
       </Menu.Item>
       <Menu.Item key={ROUTES.HOME}>
         <Link to={ROUTES.HOME}>Dashboard</Link>

@@ -12,7 +12,7 @@ import AdminPage from '../Admin'
 import { withAuthentication } from '../Session'
 import { Layout } from 'antd'
 import * as ROUTES from '../../constants/routes'
-import Buildings from '../Buildings'
+import BuildingsPage from '../Buildings'
 
 const { Header, Content, Footer } = Layout
 
@@ -31,7 +31,7 @@ const App = () => {
           <Route path={ROUTES.HOME} component={HomePage} />
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
-          <Route path={ROUTES.BUILDINGS} component={Buildings} />
+          <Route path={ROUTES.BUILDINGS} component={BuildingsPage} />
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Cinnamon Design ©2018 Created by Cinnamon Software
