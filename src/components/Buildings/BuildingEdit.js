@@ -34,11 +34,29 @@ const BuildingEdit = props => {
     <>
       {loading && <div>Loading ...</div>}
       {item && (
-        <Form>
-          <Form.Item>
+        <Form layout="inline">
+          <Form.Item label="Street">
             <Input
-              value={item.title}
-              onChange={e => setItem({ ...item, title: e.target.value })}
+              value={item.street}
+              onChange={e => setItem({ ...item, street: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Street Number">
+            <Input
+              value={item.streetNumber}
+              onChange={e => setItem({ ...item, streetNumber: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Area">
+            <Input
+              value={item.area}
+              onChange={e => setItem({ ...item, area: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Postal Code">
+            <Input
+              value={item.postalCode}
+              onChange={e => setItem({ ...item, postalCode: e.target.value })}
             />
           </Form.Item>
           <Form.Item>
