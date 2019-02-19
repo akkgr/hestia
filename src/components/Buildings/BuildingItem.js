@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { List, Icon } from 'antd'
+import { List, Icon, Avatar } from 'antd'
 
 import * as ROUTES from '../../constants/routes'
 
 const BuildingItem = props => {
   const { item } = props
+  const title = `${item.street} ${item.streetNumber}, ${item.area} ${
+    item.postalCode
+  }`
   const IconText = ({ type, text, link }) => (
     <Link to={link}>
       <Icon type={type} style={{ marginRight: 8 }} />
@@ -33,8 +36,13 @@ const BuildingItem = props => {
           link={`${ROUTES.BUILDINGS}/${item.uid}`}
         />
       ]}
+      extra={''}
     >
-      <List.Item.Meta title={item.title} description={item.description} />
+      <List.Item.Meta
+        avatar={<Avatar shape="square" size={64} icon="user" />}
+        title={title}
+        description={item.description}
+      />
     </List.Item>
   )
 }
