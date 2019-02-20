@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
-import { withAuthorization, withEmailVerification } from '../Session'
+import { withAuthorization } from '../Session'
 import { UserList, UserItem } from '../Users'
 import * as ROLES from '../../constants/roles'
 import * as ROUTES from '../../constants/routes'
@@ -22,4 +22,4 @@ const AdminPage = () => {
 
 const condition = authUser => authUser && authUser.roles.includes(ROLES.ADMIN)
 
-export default withEmailVerification(withAuthorization(condition)(AdminPage))
+export default withAuthorization(condition, true)(AdminPage)

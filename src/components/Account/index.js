@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Form, Input, Button } from 'antd'
-import { withAuthorization, withEmailVerification } from '../Session'
+import { withAuthorization } from '../Session'
 import { FirebaseContext } from '../Firebase'
 import { PasswordForgetForm } from '../PasswordForget'
 import PasswordChangeForm from '../PasswordChange'
@@ -182,4 +182,4 @@ const DefaultLoginToggle = ({
 
 const condition = authUser => !!authUser
 
-export default withEmailVerification(withAuthorization(condition)(AccountPage))
+export default withAuthorization(condition, true)(AccountPage)

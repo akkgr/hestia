@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Form, Input, Button } from 'antd'
 
-import { withAuthorization, withEmailVerification } from '../Session'
+import { withAuthorization } from '../Session'
 import { FirebaseContext } from '../Firebase'
 
 const BuildingEdit = props => {
   const firebase = useContext(FirebaseContext)
   const [item, setItem] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -64,11 +63,10 @@ const BuildingEdit = props => {
           </Form.Item>
         </Form>
       )}
-      {error && error.message}
     </>
   )
 }
 
 const condition = authUser => !!authUser
 
-export default withEmailVerification(withAuthorization(condition)(BuildingEdit))
+export default withAuthorization(condition, true)(BuildingEdit)

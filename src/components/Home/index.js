@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 
-import { withAuthorization, withEmailVerification } from '../Session'
+import { withAuthorization } from '../Session'
 import { FirebaseContext } from '../Firebase'
 import Messages from '../Messages'
 
@@ -31,4 +31,4 @@ const HomePage = ({ authUser }) => {
 
 const condition = authUser => !!authUser
 
-export default withEmailVerification(withAuthorization(condition)(HomePage))
+export default withAuthorization(condition, true)(HomePage)
