@@ -7,18 +7,15 @@ const Buildings = ({ authUser }) => {
   const firebase = useContext(FirebaseContext)
   const [loading, setLoading] = useState(false)
   const [items, setItems] = useState([])
-  const limit = 5
 
   useEffect(() => {
     setLoading(true)
     const unsubscribe = firebase
       .buildings(authUser.uid)
-      .orderBy('title', 'asc')
-      .limit(limit)
       .onSnapshot(snapshot => {
         if (snapshot.size) {
           let items = []
-          snapshot.forEach(doc => items.push({ ...doc.data(), uid: doc.id }))
+          snapshot.forEach(doc => items.push({ ...doc.data(), id: doc.id }))
           setItems(items.reverse())
           setLoading(false)
         } else {
@@ -31,7 +28,7 @@ const Buildings = ({ authUser }) => {
     }
   }, [])
 
-  return <BuildingList loading={loading} items={items} />
+  return <BuildingList loading={loading} data={items} />
 }
 
 const condition = authUser => !!authUser

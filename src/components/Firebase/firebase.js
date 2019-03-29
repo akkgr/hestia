@@ -104,6 +104,7 @@ class Firebase {
 
   buildings = uid => this.db.collection(`buildings`).where('userId', '==', uid)
   building = uid => this.db.doc(`buildings/${uid}`)
+  newBuilding = () => this.db.collection(`buildings`)
 }
 
 export default Firebase

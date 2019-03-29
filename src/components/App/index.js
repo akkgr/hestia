@@ -44,7 +44,7 @@ const App = () => {
   return (
     <AuthUserContext.Provider value={authUser}>
       <Router>
-        <Layout className="layout full-height">
+        <Layout>
           <Header>
             <Navigation />
           </Header>

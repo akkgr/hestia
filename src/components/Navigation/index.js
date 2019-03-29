@@ -29,13 +29,13 @@ const NavigationAuth = ({ history, authUser }) => {
       style={{ lineHeight: '64px' }}
     >
       <Menu.Item key={ROUTES.LANDING}>
-        <Link to={ROUTES.LANDING}>Estia</Link>
+        <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
       </Menu.Item>
       <Menu.Item key={ROUTES.HOME}>
         <Link to={ROUTES.HOME}>Dashboard</Link>
       </Menu.Item>
       <Menu.Item key={ROUTES.BUILDINGS}>
-        <Link to={ROUTES.BUILDINGS}>Buildings</Link>
+        <Link to={ROUTES.BUILDINGS}>Κτίρια</Link>
       </Menu.Item>
       <Menu.Item key={ROUTES.ACCOUNT}>
         <Link to={ROUTES.ACCOUNT}>Account</Link>
@@ -50,7 +50,7 @@ const NavigationAuth = ({ history, authUser }) => {
         onClick={firebase.doSignOut}
         style={{ float: 'right' }}
       >
-        Sign out
+        Αποσύνδεση
       </Menu.Item>
     </Menu>
   )
@@ -67,7 +67,7 @@ const NavigationNonAuth = ({ history }) => (
       <Link to={ROUTES.LANDING}>ΕΣΤΙΑ</Link>
     </Menu.Item>
     <Menu.Item key={ROUTES.SIGN_IN} style={{ float: 'right' }}>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+      <Link to={ROUTES.SIGN_IN}>Σύνδεση</Link>
     </Menu.Item>
   </Menu>
 )
